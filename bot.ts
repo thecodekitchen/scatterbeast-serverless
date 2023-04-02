@@ -1,8 +1,7 @@
 import { deploy, config } from './deps.ts';
 
 deploy.init({
-    publicKey: config().PUBLIC_KEY,
-    token: config().TOKEN
+    env: true
   })
   
   const commands = await deploy.commands.all()
