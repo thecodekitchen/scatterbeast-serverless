@@ -26,7 +26,7 @@ deploy.init({
             {
                 name: 'stuff',
                 description: 'Stuff',
-                required: true,
+                required: false,
                 type: deploy.ApplicationCommandOptionType.STRING
             }
         ]
@@ -40,6 +40,6 @@ deploy.init({
   })
 
   deploy.handle('test', (d) => {
-    const stuff = d.option<string>('stuff')
-    d.reply(`You said ${stuff}`)
+    const stuff = d.option<string| undefined>('stuff')
+    d.reply(`You said ${stuff !== undefined? stuff: 'nothing'}`)
   })
