@@ -18,6 +18,18 @@ deploy.init({
             type: deploy.ApplicationCommandOptionType.STRING
           }
         ]
+      },
+      {
+        name: 'test',
+        description: "Testing modularity",
+        options: [
+            {
+                name: 'stuff',
+                description: 'Stuff',
+                required: true,
+                type: deploy.ApplicationCommandOptionType.STRING
+            }
+        ]
       }
     ])
   }
@@ -25,4 +37,9 @@ deploy.init({
   deploy.handle('ping', (d) => {
     const arg = d.option<string | undefined>('pingarg')
     d.reply(`Pong! You typed: ${arg !== undefined ? arg : 'nothing'}`)
+  })
+
+  deploy.handle('test', (d) => {
+    const stuff = d.option<string>('stuff')
+    d.reply(`You said ${stuff}`)
   })
