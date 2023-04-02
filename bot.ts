@@ -1,4 +1,4 @@
-import { deploy, config } from './deps.ts';
+import { deploy } from './deps.ts';
 
 deploy.init({
     env: true
