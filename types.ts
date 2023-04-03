@@ -22,6 +22,7 @@ type Ability = {
 type Beast = {
     'Name': string,
     'Description': string,
+    'Image': string,
     'Rarity': Rarity,
     'Biome': Biome,
     'HP': number,
@@ -33,6 +34,7 @@ type Beast = {
 const EmptyBeast: Beast = {
     'Name': '',
     'Description': '',
+    'Image': '',
     'Biome': Biome.Suburban,
     'Rarity': Rarity.Common,
     'DEF': 0,
