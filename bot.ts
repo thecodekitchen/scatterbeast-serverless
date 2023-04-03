@@ -7,9 +7,9 @@ deploy.init({
   })
 const guildId = '1054498243100295170'
 
-deploy.commands.bulkEdit([
-    add_beast
-], guildId)
+// deploy.commands.bulkEdit([
+//     add_beast
+// ], guildId)
 
 deploy.commands.all()
     .then((cmds)=> console.log(cmds))
