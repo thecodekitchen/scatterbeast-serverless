@@ -33,7 +33,7 @@ deploy.handle('get_beast', (d)=> {
         .then((dbReply)=> {
             console.log(dbReply.value())
             if(dbReply.value()){
-                const beasts: Beast[] = JSON.parse(dbReply.value()?.valueOf() as string)
+                const beasts: Beast[] = JSON.parse(dbReply.value()?.valueOf() as string)[0]
                 console.log(beasts)
                 const beast: Beast = beasts[0]
                 if(beast['Name'] == name){
