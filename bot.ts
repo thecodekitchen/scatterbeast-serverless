@@ -12,13 +12,6 @@ const db = await redis.connect({
     password: Deno.env.get('DB_PASS')
 })  
 
-deploy.commands.delete('test')
-deploy.commands.delete('ping')
-deploy.commands.delete('stuff')
-deploy.commands.delete('stuff', guildId)
-deploy.commands.delete('things')
-deploy.commands.delete('things', guildId)
-
 deploy.commands.bulkEdit([
     {
         name: 'get_beast',
