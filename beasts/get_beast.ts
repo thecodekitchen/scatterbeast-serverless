@@ -1,7 +1,5 @@
 import { deploy } from '../deps.ts'
 import { db } from '../db.ts'
-import { EmptyBeast } from '../types.ts'
-import type { Beast } from '../types.ts'
 
 export const get_beast:deploy.ApplicationCommandPartial = {
     name: 'get_beast',
@@ -18,20 +16,39 @@ export const get_beast:deploy.ApplicationCommandPartial = {
 
 export function getBeastHandler (d: deploy.ApplicationCommandInteraction) {
     const name = d.option<string>('name')
-    db.sendCommand('JSON.GET', 'creatures', '$.creatures')
+    db.sendCommand('JSON.GET', 'beasts', '$.beasts')
         .then((dbReply)=> {
-            console.log(dbReply.value())
             if(dbReply.value()){
-                const beastJSON:string[] = JSON.parse(dbReply.value()?.valueOf() as string)[0]
-                let beast = EmptyBeast
-                beastJSON.map((json)=>{
-                    const currentBeast:Beast = JSON.parse(json)
-                    if(currentBeast['Name']==name){
-                        beast = currentBeast
-                    }
-                })
-                if(beast!=EmptyBeast){
-                    d.reply(`Here is the creature data you requested: ${beast.toString()}`)
+                const beastList:string[] = JSON.parse(dbReply.value()?.valueOf() as string)[0]
+                console.log('Beast list: ', beastList)
+                const beastJSON = beastList.filter((json)=>{ JSON.parse(json)['Name']==name})[0]
+                console.log('Beast JSON: ', beastJSON)
+                if(beastJSON){
+                    const beast = JSON.parse(beastJSON)
+                    console.log('Beast final form: ', beast)
+                    d.respond({
+                        content: `You added ${beast['Name']} to the database!`,
+                        embeds: [
+                            {
+                                title: beast['Name'],
+                                fields: [
+                                    {name: 'Description', value: beast['Description']},
+                                    {name: 'Rarity', value: beast['Rarity']},
+                                    {name: 'Biome', value: beast['Biome']},
+                                    {name: 'HP', value: beast['HP'].toString()},
+                                    {name: 'DEF', value: beast['DEF'].toString()},
+                                    {name: 'SPD', value: beast['SPD'].toString()},
+                                    {name: 'Ability', value: beast['Ability']['Name']},
+                                    {name: 'Ability Power', value: beast['Ability']['Power'].toString()}
+                                ],
+                                image: {
+                                    url: beast['Image'],
+                                    height: 200,
+                                    width: 200
+                                }
+                            }
+                        ]
+                    })
                 }
                 else{
                     d.reply("Couldn't find your beast. You sure it was added?")
