@@ -17,13 +17,14 @@ export const get_beast:deploy.ApplicationCommandPartial = {
 
 export function getBeastHandler (d: deploy.ApplicationCommandInteraction) {
     const name = d.option<string>('name')
+    console.log('Searched Name: ', name)
     db.sendCommand('JSON.GET', 'beasts', '$.beasts')
         .then((dbReply)=> {
             if(dbReply.value()){
                 const beastList:Beast[] = JSON.parse(dbReply.value()?.valueOf() as string)[0]
                 console.log('Beast list: ', beastList)
                 const beast: Beast = beastList.filter((beast)=>{ beast['Name']==name})[0]
-               
+                console.log(beast)
                 if(beast){
                     console.log('Beast final form: ', beast)
                     d.respond({
