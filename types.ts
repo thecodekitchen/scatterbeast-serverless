@@ -10,7 +10,8 @@ enum Biome {
     Voidflower = 'Voidflower Expanse',
     Glacial = 'Glacial Tropics',
     Lavaforge = 'Lavaforge Rift',
-    Arcane = 'Arcane Oasis'
+    Arcane = 'Arcane Oasis',
+    Suburban = 'Suburban'
 }
 
 type Ability = {
@@ -20,6 +21,7 @@ type Ability = {
 
 type Beast = {
     'Name': string,
+    'Description': string,
     'Rarity': Rarity,
     'Biome': Biome,
     'HP': number,
@@ -28,4 +30,19 @@ type Beast = {
     'Ability': Ability
 }
 
-export type { Beast, Rarity, Biome, Ability }
+const EmptyBeast: Beast = {
+    'Name': '',
+    'Description': '',
+    'Biome': Biome.Suburban,
+    'Rarity': Rarity.Common,
+    'DEF': 0,
+    'SPD': 0,
+    'HP': 0,
+    'Ability': {
+        'Name': '',
+        'Power': 0
+    }
+};
+
+export type { Beast, Ability }
+export {Rarity, Biome, EmptyBeast}

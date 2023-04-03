@@ -1,5 +1,6 @@
 import { deploy, redis } from './deps.ts';
-import type { Beast } from './types.ts';
+import { Biome, Rarity, EmptyBeast} from './types.ts';
+import type { Beast, Ability } from './types.ts';
 
 deploy.init({
     env: true
@@ -33,10 +34,15 @@ deploy.handle('get_beast', (d)=> {
         .then((dbReply)=> {
             console.log(dbReply.value())
             if(dbReply.value()){
-                const beasts: Beast[] = JSON.parse(dbReply.value()?.valueOf() as string)[0]
-                console.log(beasts)
-                const beast: Beast = beasts[0]
-                if(beast['Name'] == name){
+                const beastJSON:string[] = JSON.parse(dbReply.value()?.valueOf() as string)[0]
+                let beast = EmptyBeast
+                beastJSON.map((json)=>{
+                    const currentBeast:Beast = JSON.parse(json)
+                    if(currentBeast['Name']==name){
+                        beast = currentBeast
+                    }
+                })
+                if(beast!=EmptyBeast){
                     d.reply(`Here is the creature data you requested: ${beast.toString()}`)
                 }
                 else{
