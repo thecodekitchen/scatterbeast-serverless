@@ -1,5 +1,6 @@
 import { deploy } from '../deps.ts'
 import { db } from '../db.ts'
+import type { Beast } from '../types.ts'
 
 export const get_beast:deploy.ApplicationCommandPartial = {
     name: 'get_beast',
@@ -19,12 +20,11 @@ export function getBeastHandler (d: deploy.ApplicationCommandInteraction) {
     db.sendCommand('JSON.GET', 'beasts', '$.beasts')
         .then((dbReply)=> {
             if(dbReply.value()){
-                const beastList:string[] = JSON.parse(dbReply.value()?.valueOf() as string)[0]
+                const beastList:Beast[] = JSON.parse(dbReply.value()?.valueOf() as string)[0]
                 console.log('Beast list: ', beastList)
-                const beastJSON = beastList.filter((json)=>{ JSON.parse(json)['Name']==name})[0]
-                console.log('Beast JSON: ', beastJSON)
-                if(beastJSON){
-                    const beast = JSON.parse(beastJSON)
+                const beast: Beast = beastList.filter((beast)=>{ beast['Name']==name})[0]
+               
+                if(beast){
                     console.log('Beast final form: ', beast)
                     d.respond({
                         content: `You added ${beast['Name']} to the database!`,
