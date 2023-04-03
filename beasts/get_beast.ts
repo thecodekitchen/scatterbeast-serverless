@@ -23,8 +23,13 @@ export function getBeastHandler (d: deploy.ApplicationCommandInteraction) {
             if(dbReply.value()){
                 const beastList:Beast[] = JSON.parse(dbReply.value()?.valueOf() as string)[0]
                 console.log('Beast list: ', beastList)
-                const beast: Beast = beastList.filter((beast)=>{ beast['Name']==name})[0]
-                console.log(beastList[0]['Name'])
+                const beast: Beast|undefined = beastList.map((beast)=>{ 
+                    if(beast['Name']==name){
+                        console.log('Found a match!')
+                        return beast
+                    }
+                })[0]
+                console.log(beast)
                 if(beast){
                     console.log('Beast final form: ', beast)
                     d.respond({
