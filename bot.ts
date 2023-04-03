@@ -29,15 +29,15 @@ deploy.commands.bulkEdit([
 
 deploy.handle('get_beast', (d)=> {
     const name = d.option<string>('name')
-    db.sendCommand('JSON.GET', '$.creatures')
+    db.sendCommand('JSON.GET', 'creatures', '$.creatures')
         .then((dbReply)=> {
-            console.log(dbReply.string())
-            if(dbReply.string()){
-                const beasts = JSON.parse(dbReply.string()?.valueOf() as string)
+            console.log(dbReply.value())
+            if(dbReply.value()){
+                const beasts: Beast[] = JSON.parse(dbReply.value()?.valueOf() as string)
                 console.log(beasts)
                 const beast: Beast = beasts[0]
                 if(beast['Name'] == name){
-                    d.reply(`Here is the creature data you requested: ${beast}`)
+                    d.reply(`Here is the creature data you requested: ${beast.toString()}`)
                 }
                 else{
                     d.reply("Couldn't find your beast. You sure it was added?")
