@@ -3,6 +3,19 @@ import { db } from '../db.ts'
 import { Biome, Rarity } from '../types.ts'
 import type { Beast} from '../types.ts'
 
+let biome_choices: deploy.ApplicationCommandChoice[] = []
+let rarity_choices: deploy.ApplicationCommandChoice[] = []
+
+Object.values(Biome).forEach((choice)=>{
+    biome_choices.push({name: choice, value: choice})
+})
+Object.values(Rarity).forEach((choice)=>{
+    rarity_choices.push({name: choice, value: choice})
+})
+
+console.log(biome_choices)
+console.log(rarity_choices)
+
 export const add_beast:deploy.ApplicationCommandPartial = {
     name: 'add_beast',
     description: 'Create a new beast!',
@@ -23,12 +36,7 @@ export const add_beast:deploy.ApplicationCommandPartial = {
             name: 'biome',
             description: "Where does your beast hail from?",
             type: deploy.ApplicationCommandOptionType.STRING,
-            choices: Object.values(Biome).map((biome)=> {
-                return {
-                    name: biome,
-                    value: biome
-                }
-            }),
+            choices: biome_choices,
             required: true,
             autocomplete: true
         },
@@ -36,12 +44,7 @@ export const add_beast:deploy.ApplicationCommandPartial = {
             name: 'rarity',
             description: "How rare is your beast?",
             type: deploy.ApplicationCommandOptionType.STRING,
-            choices: Object.values(Rarity).map((rarity)=> {
-                return {
-                    name: rarity,
-                    value: rarity
-                }
-            }),
+            choices: rarity_choices,
             required: true,
             autocomplete: true
         },
