@@ -31,9 +31,9 @@ deploy.handle('get_beast', (d)=> {
     const name = d.option<string>('name')
     db.sendCommand('JSON.GET', '$.creatures')
         .then((dbReply)=> {
-            console.log(dbReply)
-            if(dbReply.value()){
-                const beasts = JSON.parse(dbReply.value()?.valueOf() as string)
+            console.log(dbReply.bulk())
+            if(dbReply.bulk()){
+                const beasts = JSON.parse(dbReply.bulk()?.valueOf() as string)
                 console.log(beasts)
                 const beast: Beast = beasts[0]
                 if(beast['Name'] == name){
