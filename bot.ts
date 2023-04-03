@@ -8,11 +8,10 @@ deploy.init({
 const guildId = '1054498243100295170'
 
 deploy.commands.bulkEdit([
-    get_beast,
     add_beast
 ], guildId)
 
 deploy.commands.all()
     .then((cmds)=> console.log(cmds))
-deploy.handle('get_beast', getBeastHandler)
+
 deploy.handle('add_beast', addBeastHandler)
