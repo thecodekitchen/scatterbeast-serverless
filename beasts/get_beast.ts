@@ -24,7 +24,7 @@ export function getBeastHandler (d: deploy.ApplicationCommandInteraction) {
                 const beastList:Beast[] = JSON.parse(dbReply.value()?.valueOf() as string)[0]
                 console.log('Beast list: ', beastList)
                 const beast: Beast = beastList.filter((beast)=>{ beast['Name']==name})[0]
-                console.log(beast)
+                console.log(beastList[0]['Name'])
                 if(beast){
                     console.log('Beast final form: ', beast)
                     d.respond({
