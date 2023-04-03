@@ -12,5 +12,7 @@ deploy.commands.bulkEdit([
     add_beast
 ], guildId)
 
+deploy.commands.all()
+    .then((cmds)=> console.log(cmds))
 deploy.handle('get_beast', getBeastHandler)
 deploy.handle('add_beast', addBeastHandler)
