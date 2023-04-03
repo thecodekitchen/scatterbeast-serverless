@@ -3,18 +3,19 @@ import { db } from '../db.ts'
 import { Biome, Rarity } from '../types.ts'
 import type { Beast} from '../types.ts'
 
-let biome_choices: deploy.ApplicationCommandChoice[] = []
-let rarity_choices: deploy.ApplicationCommandChoice[] = []
-
-Object.values(Biome).forEach((choice)=>{
-    biome_choices.push({name: choice, value: choice})
-})
-Object.values(Rarity).forEach((choice)=>{
-    rarity_choices.push({name: choice, value: choice})
-})
-
-console.log(biome_choices)
-console.log(rarity_choices)
+const biome_choices: deploy.ApplicationCommandChoice[] = [
+    {name: 'Voidflower Expanse', value: 'Voidflower Expanse'},
+    {name: 'Glacial Tropics', value: 'Glacial Tropics'},
+    {name: 'Lavaforge Rift', value: 'Lavaforge Rift'},
+    {name: 'Arcane Oasis', value: 'Arcane Oasis'}
+]
+const rarity_choices: deploy.ApplicationCommandChoice[] = [
+    {name: 'Common', value: 'Common'},
+    {name: 'Uncommon', value: 'Uncommon'},
+    {name: 'Rare', value: 'Rare'},
+    {name: 'Legendary', value:'Legendary'},
+    {name: 'Unique', value: 'Unique'}
+]
 
 export const add_beast:deploy.ApplicationCommandPartial = {
     name: 'add_beast',
