@@ -1,44 +1,55 @@
-import { deploy } from './deps.ts';
-
-const guildId = '1054498243100295170'
+import { deploy, redis } from './deps.ts';
+import type { Beast } from './types.ts';
 
 deploy.init({
     env: true
   })
-  
+const guildId = '1054498243100295170'
+const db = await redis.connect({
+    hostname: 'redis-14781.c1.us-east1-2.gce.cloud.redislabs.com',
+    port: 14781,
+    username: 'scatterbot',
+    password: Deno.env.get('DB_PASS')
+})  
+
+deploy.commands.delete('test')
+deploy.commands.delete('ping')
+deploy.commands.delete('stuff')
+deploy.commands.delete('stuff', guildId)
+deploy.commands.delete('things')
+deploy.commands.delete('things', guildId)
+
 deploy.commands.bulkEdit([
     {
-        name: 'stuff',
-        description: 'A test command',
+        name: 'get_beast',
+        description: 'Display a beast',
         options: [
             {
-                name: 'an_option',
-                description: 'An option',
+                name: 'name',
+                description: 'What beast are you looking for?',
                 type: deploy.ApplicationCommandOptionType.STRING,
                 required: true
-            }
-        ]
-    },
-    {
-        name: 'things',
-        description: 'A second test command',
-        options: [
-            {
-                name: 'another_option',
-                description: 'An optional option',
-                type: deploy.ApplicationCommandOptionType.STRING,
-                required: false
             }
         ]
     }
 ], guildId)
 
-deploy.handle('stuff', (d)=>{
-    const stuff = d.option<string>('an_option')
-    d.reply(`You said ${stuff}`)
-})
-
-deploy.handle('things', (d)=>{
-    const things = d.option<string | undefined>('another_option')
-    d.reply(`You said ${things !== undefined ? things: 'nothing'}`)
+deploy.handle('get_beast', (d)=> {
+    const name = d.option<string>('name')
+    db.sendCommand('JSON.GET', '$.creatures')
+        .then((dbReply)=> {
+            if(dbReply.value()){
+                const beasts = JSON.parse(dbReply.value()?.valueOf() as string)
+                const beast: Beast = beasts[0]
+                if(beast['Name'] == name){
+                    d.reply(`Here is the creature data you requested: ${beast}`)
+                }
+                else{
+                    d.reply("Couldn't find your beast. You sure it was added?")
+                }
+            }
+            else {
+                d.reply('Failed to connect to database.')
+            }
+        })
 })
